@@ -1,0 +1,241 @@
+/* ===== Estilos generales ===== */
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f2f2f2;
+  color: #333333;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== Encabezado (usado en las demás páginas) ===== */
+header {
+  background-color: #1a1a2e;
+  color: white;
+  padding: 15px;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+}
+
+/* ===== Barra superior oscura estilo AllAccess (solo en index.html) ===== */
+.topbar {
+  background-color: #000000;
+  padding: 15px 30px;
+}
+
+.topbar .logo {
+  float: left;
+  color: white;
+  font-size: 22px;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.topbar-links {
+  float: right;
+}
+
+.topbar-links a {
+  color: white;
+  text-decoration: none;
+  margin-left: 25px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.topbar-links a:hover {
+  text-decoration: underline;
+}
+
+/* Este div limpia el float para que no se "rompa" el diseño */
+.topbar::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+/* ===== Barra de búsqueda (solo en index.html) ===== */
+.searchbar {
+  background-color: #000000;
+  padding: 20px 30px 30px 30px;
+  text-align: center;
+}
+
+.searchbar input[type="text"] {
+  width: 60%;
+  max-width: 500px;
+  padding: 10px;
+  border: none;
+  border-radius: 4px 0 0 4px;
+}
+
+.searchbar input[type="submit"] {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  background-color: #1f1170;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* ===== Menú de navegación ===== */
+nav {
+  background-color: #260c5d;
+  padding: 10px;
+  text-align: center;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  margin: 0 15px;
+  font-weight: bold;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+/* ===== Contenido general ===== */
+.contenido {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+h2 {
+  border-bottom: 2px solid #e63946;
+  padding-bottom: 5px;
+}
+
+/* ===== Banner de bienvenida (imagen grande de fondo) ===== */
+.banner {
+  width: 100%;
+}
+
+.banner img {
+  width: 100%;
+  height: 500px;
+  display: block;
+  object-fit: cover;
+  border: none;
+}
+
+/* ===== Tabla de eventos ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+table, th, td {
+  border: 1px solid #999999;
+}
+
+th {
+  background-color: #1a1a2e;
+  color: white;
+  padding: 8px;
+}
+
+td {
+  padding: 8px;
+  text-align: center;
+}
+
+td img {
+  width: 100px;
+}
+
+/* ===== Cajas de eventos (box) ===== */
+.caja {
+  display: inline-block;
+  width: 220px;
+  border: 2px solid #1a1a2e;
+  border-radius: 8px;
+  margin: 10px;
+  padding: 10px;
+  background-color: white;
+  text-align: center;
+  vertical-align: top;
+}
+
+.caja img {
+  width: 100%;
+}
+
+/* ===== Botones ===== */
+.boton {
+  display: inline-block;
+  background-color: #e63946;
+  color: white;
+  padding: 8px 15px;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-top: 8px;
+}
+
+.boton:hover {
+  background-color: #b32d3a;
+}
+
+/* ===== Ficha de producto ===== */
+.producto-detalle img {
+  width: 300px;
+  float: left;
+  margin-right: 20px;
+  border: 3px solid #1a1a2e;
+}
+
+/* ===== Formulario de compra ===== */
+form {
+  background-color: white;
+  border: 2px solid #1a1a2e;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+form label {
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="tel"],
+form input[type="email"],
+form select {
+  width: 100%;
+  padding: 6px;
+  margin-top: 4px;
+  box-sizing: border-box;
+}
+
+form input[type="submit"] {
+  margin-top: 20px;
+  background-color: #e63946;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+form input[type="submit"]:hover {
+  background-color: #b32d3a;
+}
+
+/* ===== Pie de página ===== */
+footer {
+  text-align: center;
+  padding: 15px;
+  margin-top: 30px;
+  background-color: #1a1a2e;
+  color: white;
+}
