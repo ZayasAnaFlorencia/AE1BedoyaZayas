@@ -17,7 +17,7 @@
     <a href="index.html">Inicio</a>
     <a href="listado_tabla.html">Listado (Tabla)</a>
     <a href="listado_box.html">Listado (Cajas)</a>
-    <a href="producto.html">Ficha de Ticket</a>
+   <a href="producto.html">Ficha de Ticket</a>
     <a href="comprar.html">Comprar</a>
   </nav>
 
@@ -49,16 +49,16 @@
 
       <label for="tickets">Ticket seleccionado:</label>
       <select id="tickets" name="tickets">
-        <option value="duki" data-precio="45000">BTS World Tour ($45.000)</option>
-        <option value="bandalos" data-precio="80000">Olivia Wald ($80.000)</option>
-        <option value="beriso" data-precio="75000">Maroon 5 ($75.000)</option>
-        <option value="nathy" data-precio="65000">CALAMARO ($65.000)</option>
+        <option value="duki">BTS World Tour ($45.000)</option>
+        <option value="bandalos">Olivia Wald($80.000)</option>
+        <option value="beriso">Maroon 5 ($75.000)</option>
+        <option value="nathy">CALAMARO ($65.000)</option>
       </select>
 
-      <label for="cantidad">Cantidad de entradas:</label>
-      <input type="number" id="cantidad" name="cantidad" min="1" value="1">
-
-      <p>Subtotal a abonar: $<span id="subtotal">45.000</span></p>
+      <label for="cupon">Código de descuento:</label>
+      <input type="text" id="cupon" name="cupon" placeholder="Ej: UCP10">
+      <button type="button" class="boton" onclick="validarCupon()">Aplicar cupón</button>
+      <div id="mensaje"></div>
 
       <input type="submit" value="Confirmar compra">
 
@@ -66,11 +66,32 @@
   </div>
   </main>
 
+  <script>
+    function validarCupon() {
+      const input = document.getElementById('cupon');
+      const mensaje = document.getElementById('mensaje');
+
+      const codigo = input.value.trim().toUpperCase();
+
+      // Reiniciar clases antes de evaluar
+      mensaje.classList.remove('mensaje-error', 'mensaje-exito');
+
+      if (codigo === '') {
+        mensaje.textContent = 'Por favor, ingrese un código';
+        mensaje.classList.add('mensaje-error');
+      } else if (codigo === 'UCP10') {
+        mensaje.textContent = '¡Cupón aplicado! Tenés un 10% de descuento';
+        mensaje.classList.add('mensaje-exito');
+      } else {
+        mensaje.textContent = 'Código inválido o vencido';
+        mensaje.classList.add('mensaje-error');
+      }
+    }
+  </script>
+
   <footer>
     <p>TicketShow &copy; 2026 - Todos los derechos reservados</p>
   </footer>
-
-  <script src="comprar.js"></script>
 
 </body>
 </html>
