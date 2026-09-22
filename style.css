@@ -351,3 +351,20 @@ footer {
     max-width: 100%;
   }
 }
+
+.mensaje-error {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin: 10px 0;
+}
+.mensaje-exito {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #86efac;
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin: 10px 0;
+}
