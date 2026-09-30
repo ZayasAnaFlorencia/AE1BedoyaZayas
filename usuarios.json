@@ -1,0 +1,12 @@
+[
+  {
+    "email": "lana@ticketshow.com",
+    "password": "entradas2026",
+    "nombre": "Lana"
+  },
+  {
+    "email": "demo@ticketshow.com",
+    "password": "clave12345",
+    "nombre": "Demo"
+  }
+]
