@@ -1,0 +1,282 @@
+[
+  {
+    "id": "stray-kids",
+    "nombre": "Stray Kids - STRAYCITY",
+    "fecha": "14/09/2026",
+    "lugar": "Hipódromo de San Isidro, Buenos Aires",
+    "precio": 126500,
+    "imagen": "https://cdn.getcrowder.com/images/287e865e-4338-4e21-94e2-a45e6c84e122-017547dd-d457-4dd2-a684-080027698ae6-06d3e074-b3c8-4ac9-84c5-88b0bff0dfef.jpg?w=960&format=webp",
+    "descripcion": "Stray Kids, la boyband surcoreana de K-pop, debuta en la Argentina con STRAYCITY, una noche especial junto a NEXZ, K4OS y Cocho.",
+    "entradas": [
+      {
+        "id": "general",
+        "nombre": "Campo General",
+        "precio": 126500
+      },
+      {
+        "id": "platea3",
+        "nombre": "Platea 3",
+        "precio": 207000
+      },
+      {
+        "id": "platea2",
+        "nombre": "Platea 2",
+        "precio": 253000
+      },
+      {
+        "id": "delantero",
+        "nombre": "Campo Delantero",
+        "precio": 333500
+      }
+    ]
+  },
+  {
+    "id": "republica-folklore",
+    "nombre": "República Folklore",
+    "fecha": "21 y 22/11/2026",
+    "lugar": "Parque de la Ciudad, Buenos Aires",
+    "precio": 60000,
+    "imagen": "https://cdn.getcrowder.com/images/96b59e76-950c-4536-bb44-8e30b7c09426-image.png?w=640&format=webp",
+    "descripcion": "Festival de folklore de dos días con una grilla multitudinaria de artistas nacionales, en el Parque de la Ciudad.",
+    "entradas": [
+      {
+        "id": "general",
+        "nombre": "Campo General",
+        "precio": 60000
+      },
+      {
+        "id": "dia1",
+        "nombre": "Pase Sábado 21",
+        "precio": 40000
+      },
+      {
+        "id": "dia2",
+        "nombre": "Pase Domingo 22",
+        "precio": 40000
+      },
+      {
+        "id": "vip",
+        "nombre": "VIP",
+        "precio": 120000
+      }
+    ]
+  },
+  {
+    "id": "fro",
+    "nombre": "FRO!",
+    "fecha": "02/10/2026",
+    "lugar": "C Art Media, Buenos Aires",
+    "precio": 50000,
+    "imagen": "https://cdn.getcrowder.com/images/94e7857f-33d2-4e86-8c6b-1c2ce07667b3-640x640.png?w=480&format=webp",
+    "descripcion": "Show en vivo de FRO! en C Art Media, con una noche de música y mucha energía.",
+    "entradas": [
+      {
+        "id": "general",
+        "nombre": "Campo General",
+        "precio": 50000
+      },
+      {
+        "id": "plateabaja",
+        "nombre": "Platea Baja",
+        "precio": 65000
+      },
+      {
+        "id": "vip",
+        "nombre": "VIP + Meet & Greet",
+        "precio": 100000
+      }
+    ]
+  },
+  {
+    "id": "russo-resurreccion",
+    "nombre": "Russo - Resurrección",
+    "fecha": "11/09/2026",
+    "lugar": "A confirmar",
+    "precio": 55000,
+    "imagen": "https://cdn.getcrowder.com/images/e723dbb5-22e6-4f53-b343-ee2383179488-pagweb-17-5.jpg?w=480&format=webp",
+    "descripcion": "Show revival de Resurrección, con Russo como figura central de la noche.",
+    "entradas": [
+      {
+        "id": "general",
+        "nombre": "Campo General",
+        "precio": 55000
+      },
+      {
+        "id": "plateabaja",
+        "nombre": "Platea Baja",
+        "precio": 72000
+      },
+      {
+        "id": "vip",
+        "nombre": "VIP + Meet & Greet",
+        "precio": 110000
+      }
+    ]
+  },
+  {
+    "id": "foo-fighters",
+    "nombre": "Foo Fighters - Take Cover Tour",
+    "fecha": "25/02/2027",
+    "lugar": "Estadio River Plate, Buenos Aires",
+    "precio": 115000,
+    "imagen": "https://cdn.getcrowder.com/images/6450bfb0-e5a3-4527-b326-20aceb834f98-9cb0ea32-0e49-40ad-b09a-0962eae3a21d-foofighters-bannersaa-1920x720.jpg?w=960&format=webp",
+    "descripcion": "La banda de Dave Grohl vuelve a la Argentina con el Take Cover Tour, que presenta su álbum Your Favorite Toy. Bandas invitadas: Usted Señálemelo y Pacifica.",
+    "entradas": [
+      {
+        "id": "platea-alta",
+        "nombre": "Platea Sívori Alta",
+        "precio": 115000
+      },
+      {
+        "id": "general",
+        "nombre": "Campo General + Sívori Baja",
+        "precio": 175000
+      },
+      {
+        "id": "delantero",
+        "nombre": "Campo Delantero",
+        "precio": 345000
+      },
+      {
+        "id": "platea-baja",
+        "nombre": "Platea Belgrano Inferior",
+        "precio": 365000
+      }
+    ]
+  },
+  {
+    "id": "mana",
+    "nombre": "Maná - Vivir sin aire Tour",
+    "fecha": "10/12/2026",
+    "lugar": "Estadio River Plate, Buenos Aires",
+    "precio": 90000,
+    "imagen": "https://cdn.getcrowder.com/images/12491991-802b-4c4e-95b0-1dcb5f993be0-b94994fd-d6a7-478c-b4a4-b3f640878dda-whatsapp-image-2026-06-12-at-12.53.19.jpg?w=640&format=webp",
+    "descripcion": "Maná presenta su Vivir sin aire Tour en un único show en la Argentina.",
+    "entradas": [
+      {
+        "id": "general",
+        "nombre": "Campo General",
+        "precio": 90000
+      },
+      {
+        "id": "plateabaja",
+        "nombre": "Platea Baja",
+        "precio": 117000
+      },
+      {
+        "id": "vip",
+        "nombre": "VIP + Meet & Greet",
+        "precio": 180000
+      }
+    ]
+  },
+  {
+    "id": "bts",
+    "nombre": "BTS World Tour Arirang",
+    "fecha": "21/10/2026",
+    "lugar": "Estadio Único de La Plata, Buenos Aires",
+    "precio": 45000,
+    "imagen": "https://cdn.getcrowder.com/images/76132759-6880-4f70-bb61-ddfffc956be9-bts.jpeg?w=640&format=webp",
+    "descripcion": "BTS, acrónimo de Bangtan Sonyeondan o «Beyond the Scene», es una boyband surcoreana nominada al GRAMMY que ha conquistado a millones de fans en todo el mundo desde su debut en junio de 2013. Sus integrantes son RM, Jin, SUGA, j-hope, Jimin, V y Jung Kook.",
+    "entradas": [
+      {
+        "id": "general",
+        "nombre": "Campo General",
+        "precio": 45000
+      },
+      {
+        "id": "plateabaja",
+        "nombre": "Platea Baja",
+        "precio": 60000
+      },
+      {
+        "id": "plateaalta",
+        "nombre": "Platea Alta",
+        "precio": 50000
+      },
+      {
+        "id": "vip",
+        "nombre": "VIP + Meet & Greet",
+        "precio": 120000
+      }
+    ]
+  },
+  {
+    "id": "olivia-wald",
+    "nombre": "Olivia Wald",
+    "fecha": "25/10/2026",
+    "lugar": "C Art Media, Buenos Aires",
+    "precio": 80000,
+    "imagen": "https://cdn.getcrowder.com/images/18214696-0d49-49c5-9f24-a4388031fe2e-image.png?w=480&format=webp",
+    "descripcion": "Olivia Wald presenta su show en vivo en C Art Media.",
+    "entradas": [
+      {
+        "id": "general",
+        "nombre": "Campo General",
+        "precio": 80000
+      },
+      {
+        "id": "plateabaja",
+        "nombre": "Platea Baja",
+        "precio": 104000
+      },
+      {
+        "id": "vip",
+        "nombre": "VIP + Meet & Greet",
+        "precio": 160000
+      }
+    ]
+  },
+  {
+    "id": "maroon-5",
+    "nombre": "Maroon 5",
+    "fecha": "08/11/2026",
+    "lugar": "Estadio Obras, Buenos Aires",
+    "precio": 75000,
+    "imagen": "https://cdn.getcrowder.com/images/ea85912e-de3b-41cb-9209-da3d9a7c2034-maroon5-banneraa-640x640-1.jpg?w=480&format=webp",
+    "descripcion": "Maroon 5 vuelve a Buenos Aires con un show cargado de sus mayores éxitos.",
+    "entradas": [
+      {
+        "id": "general",
+        "nombre": "Campo General",
+        "precio": 75000
+      },
+      {
+        "id": "plateabaja",
+        "nombre": "Platea Baja",
+        "precio": 98000
+      },
+      {
+        "id": "vip",
+        "nombre": "VIP + Meet & Greet",
+        "precio": 150000
+      }
+    ]
+  },
+  {
+    "id": "calamaro",
+    "nombre": "Calamaro",
+    "fecha": "20/11/2026",
+    "lugar": "Luna Park, Buenos Aires",
+    "precio": 65000,
+    "imagen": "https://cdn.getcrowder.com/images/957fb504-d4ae-4d2c-8269-620f49958fbf-image.jpeg?w=480&format=webp",
+    "descripcion": "Andrés Calamaro en vivo, con un repaso por lo mejor de su repertorio.",
+    "entradas": [
+      {
+        "id": "general",
+        "nombre": "Campo General",
+        "precio": 65000
+      },
+      {
+        "id": "plateabaja",
+        "nombre": "Platea Baja",
+        "precio": 84000
+      },
+      {
+        "id": "vip",
+        "nombre": "VIP + Meet & Greet",
+        "precio": 130000
+      }
+    ]
+  }
+]
