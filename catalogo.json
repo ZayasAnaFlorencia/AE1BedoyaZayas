@@ -1,0 +1,30 @@
+[
+  {
+    "nombre": "BTS World Tour Arirang",
+    "fecha": "21/10/2026",
+    "lugar": "Estadio único de La Plata",
+    "precio": 45000,
+    "imagen": "https://cdn.getcrowder.com/images/76132759-6880-4f70-bb61-ddfffc956be9-bts.jpeg?w=640&format=webp"
+  },
+  {
+    "nombre": "Olivia Wald",
+    "fecha": "25/10/2026",
+    "lugar": "C Art Media",
+    "precio": 80000,
+    "imagen": "https://cdn.getcrowder.com/images/18214696-0d49-49c5-9f24-a4388031fe2e-image.png?w=480&format=webp"
+  },
+  {
+    "nombre": "Maroon 5",
+    "fecha": "08/11/2026",
+    "lugar": "Estadio Obras",
+    "precio": 75000,
+    "imagen": "https://cdn.getcrowder.com/images/ea85912e-de3b-41cb-9209-da3d9a7c2034-maroon5-banneraa-640x640-1.jpg?w=480&format=webp"
+  },
+  {
+    "nombre": "Calamaro",
+    "fecha": "20/11/2026",
+    "lugar": "Luna Park",
+    "precio": 65000,
+    "imagen": "https://cdn.getcrowder.com/images/957fb504-d4ae-4d2c-8269-620f49958fbf-image.jpeg?w=480&format=webp"
+  }
+]

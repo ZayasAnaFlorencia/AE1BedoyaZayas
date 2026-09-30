@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TicketShow - Compra Confirmada</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="header-principal">
+    <div class="topbar">
+      <div class="logo">🎟️ TICKETSHOW</div>
+      <div class="topbar-links">
+        <a href="support.html">SOPORTE</a>
+        <a href="mis_entradas.html" id="link-mis-entradas" hidden>MIS ENTRADAS</a>
+        <a href="login.html" id="link-sesion">INGRESAR / REGISTRARSE</a>
+        <a href="carrito.html">CARRITO <span id="cart-count" class="cart-badge"></span></a>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <a href="index.html">Inicio</a>
+    <a href="listado_box.html">Listado de Eventos</a>
+    <a href="producto.html">Ficha de Ticket</a>
+  </nav>
+
+  <main>
+  <div class="contenido">
+
+    <div id="confirmacion-contenido">
+      <!-- Se completa dinámicamente con JavaScript -->
+    </div>
+
+  </div>
+  </main>
+
+  <footer>
+    <p>TicketShow &copy; 2026 - Todos los derechos reservados</p>
+  </footer>
+
+  <script src="carrito.js"></script>
+  <script src="app.js"></script>
+  <script>
+    const contenedor = document.getElementById('confirmacion-contenido');
+    const ordenGuardada = localStorage.getItem('ticketshow_ultima_orden');
+
+    if (!ordenGuardada) {
+      // Si alguien entra a esta página sin haber comprado nada, lo mandamos al inicio
+      contenedor.innerHTML = `
+        <div class="confirmacion-caja">
+          <p>No encontramos ninguna compra reciente.</p>
+          <a href="index.html" class="boton">Volver al inicio</a>
+        </div>
+      `;
+    } else {
+      const orden = JSON.parse(ordenGuardada);
+
+      let filasItems = '';
+      orden.items.forEach(item => {
+        filasItems += `
+          <div class="detalle-orden fila">
+            <span>${item.nombre} &times; ${item.cantidad}</span>
+            <span>$${formatearPrecio(item.precio * item.cantidad)}</span>
+          </div>
+        `;
+      });
+
+      contenedor.innerHTML = `
+        <div class="confirmacion-caja">
+          <div class="check">✅</div>
+          <h2>¡Gracias por tu compra, ${orden.cliente.nombre}!</h2>
+          <p>Tu número de orden es <span class="numero-orden">${orden.numero}</span></p>
+          <p>Enviamos los detalles a <strong>${orden.cliente.email}</strong></p>
+
+          <div class="detalle-orden">
+            ${filasItems}
+            <div class="fila">
+              <strong>Total pagado</strong>
+              <strong>$${formatearPrecio(orden.total)}</strong>
+            </div>
+            <div class="fila">
+              <span>Medio de pago</span>
+              <span>${orden.cliente.pago}</span>
+            </div>
+            <div class="fila">
+              <span>Fecha de compra</span>
+              <span>${orden.fecha}</span>
+            </div>
+          </div>
+
+          <p style="margin-top:20px;">
+            <a href="index.html" class="boton">Volver al inicio</a>
+            <a href="mis_entradas.html" class="boton">Ver mis entradas</a>
+            <a href="listado_box.html" class="boton" style="background-color:#1a1a2e;">Seguir viendo shows</a>
+          </p>
+        </div>
+      `;
+    }
+  </script>
+
+</body>
+</html>

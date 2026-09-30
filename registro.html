@@ -14,17 +14,17 @@
       <div class="logo">🎟️ TICKETSHOW</div>
       <div class="topbar-links">
         <a href="support.html">SOPORTE</a>
-        <a href="login.html">INGRESAR / REGISTRARSE</a>
+        <a href="mis_entradas.html" id="link-mis-entradas" hidden>MIS ENTRADAS</a>
+        <a href="login.html" id="link-sesion">INGRESAR / REGISTRARSE</a>
+        <a href="carrito.html">CARRITO <span id="cart-count" class="cart-badge"></span></a>
       </div>
     </div>
   </header>
 
   <nav>
     <a href="index.html">Inicio</a>
-    <a href="listado_tabla.html">Listado (Tabla)</a>
-    <a href="listado_box.html">Listado (Cajas)</a>
+    <a href="listado_box.html">Listado de Eventos</a>
     <a href="producto.html">Ficha de Ticket</a>
-    <a href="comprar.html">Comprar</a>
   </nav>
 
   <main>
@@ -34,7 +34,7 @@
       <h2>Crear cuenta</h2>
       <p>¿Ya tenés una cuenta? <a href="login.html">Ingresá aquí</a></p>
 
-      <form action="#" method="post">
+      <form id="form-registro" action="#" method="post" novalidate>
 
         <label for="email">E-mail:</label>
         <input type="email" id="email" name="email" placeholder="E-mail">
@@ -53,6 +53,7 @@
 
         <label for="pais">País de residencia:</label>
         <select id="pais" name="pais">
+          <option value="">Seleccioná tu país</option>
           <option value="argentina">Argentina</option>
           <option value="chile">Chile</option>
           <option value="uruguay">Uruguay</option>
@@ -87,6 +88,8 @@
         <p><input type="checkbox" id="newsletter" name="newsletter">
         <label for="newsletter" class="check-label">Suscribirme al newsletter y recibir novedades de giras y espectáculos</label></p>
 
+        <p id="mensaje-registro" class="mensaje" hidden></p>
+
         <input type="submit" value="Registrarme">
 
       </form>
@@ -98,6 +101,9 @@
   <footer>
     <p>TicketShow &copy; 2026 - Todos los derechos reservados</p>
   </footer>
+
+  <script src="carrito.js"></script>
+  <script src="app.js"></script>
 
 </body>
 </html>

@@ -3,41 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TicketShow - Comprar Entradas</title>
+  <title>TicketShow - Finalizar Compra</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <header>
-    <h1>🎟️ TicketShow</h1>
-    <p>Tu entrada a los mejores shows en vivo</p>
+  <header class="header-principal">
+    <div class="topbar">
+      <div class="logo">🎟️ TICKETSHOW</div>
+      <div class="topbar-links">
+        <a href="support.html">SOPORTE</a>
+        <a href="mis_entradas.html" id="link-mis-entradas" hidden>MIS ENTRADAS</a>
+        <a href="login.html" id="link-sesion">INGRESAR / REGISTRARSE</a>
+        <a href="carrito.html">CARRITO <span id="cart-count" class="cart-badge"></span></a>
+      </div>
+    </div>
   </header>
 
   <nav>
     <a href="index.html">Inicio</a>
-    <a href="listado_tabla.html">Listado (Tabla)</a>
-    <a href="listado_box.html">Listado (Cajas)</a>
+    <a href="listado_box.html">Listado de Eventos</a>
     <a href="producto.html">Ficha de Ticket</a>
-    <a href="comprar.html">Comprar</a>
   </nav>
 
   <main>
   <div class="contenido">
-    <h2>Formulario de Compra</h2>
+    <h2>Finalizar Compra</h2>
 
-    <form action="#" method="post">
+    <div id="resumen-checkout" class="resumen-carrito" style="margin:0 0 20px 0; max-width:100%; text-align:left;">
+      <!-- Se completa dinámicamente con los ítems del carrito -->
+    </div>
+
+    <form id="form-compra" action="#" method="post">
 
       <label for="nombre">Nombre del cliente:</label>
-      <input type="text" id="nombre" name="nombre" placeholder="Ej: Juan Pérez">
+      <input type="text" id="nombre" name="nombre" placeholder="Ej: Juan Pérez" required>
 
       <label for="direccion">Dirección:</label>
-      <input type="text" id="direccion" name="direccion" placeholder="Ej: Av. Siempre Viva 123">
+      <input type="text" id="direccion" name="direccion" placeholder="Ej: Av. Siempre Viva 123" required>
 
       <label for="telefono">Teléfono:</label>
-      <input type="tel" id="telefono" name="telefono" placeholder="Ej: 11-2345-6789">
+      <input type="tel" id="telefono" name="telefono" placeholder="Ej: 11-2345-6789" required>
 
       <label for="email">E-mail:</label>
-      <input type="email" id="email" name="email" placeholder="Ej: juan@correo.com">
+      <input type="email" id="email" name="email" placeholder="Ej: juan@correo.com" required>
 
       <label for="pago">Medio de pago:</label>
       <select id="pago" name="pago">
@@ -46,19 +55,6 @@
         <option value="transferencia">Transferencia bancaria</option>
         <option value="efectivo">Efectivo (Pago Fácil / Rapipago)</option>
       </select>
-
-      <label for="tickets">Ticket seleccionado:</label>
-      <select id="tickets" name="tickets">
-        <option value="duki" data-precio="45000">BTS World Tour ($45.000)</option>
-        <option value="bandalos" data-precio="80000">Olivia Wald ($80.000)</option>
-        <option value="beriso" data-precio="75000">Maroon 5 ($75.000)</option>
-        <option value="nathy" data-precio="65000">CALAMARO ($65.000)</option>
-      </select>
-
-      <label for="cantidad">Cantidad de entradas:</label>
-      <input type="number" id="cantidad" name="cantidad" min="1" value="1">
-
-      <p>Subtotal a abonar: $<span id="subtotal">45.000</span></p>
 
       <input type="submit" value="Confirmar compra">
 
@@ -70,6 +66,8 @@
     <p>TicketShow &copy; 2026 - Todos los derechos reservados</p>
   </footer>
 
+  <script src="carrito.js"></script>
+  <script src="app.js"></script>
   <script src="comprar.js"></script>
 
 </body>

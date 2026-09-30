@@ -16,25 +16,25 @@
       <div class="logo">🎟️ TICKETSHOW</div>
       <div class="topbar-links">
         <a href="support.html">SOPORTE</a>
-        <a href="login.html">INGRESAR / REGISTRARSE</a>
+        <a href="mis_entradas.html" id="link-mis-entradas" hidden>MIS ENTRADAS</a>
+        <a href="login.html" id="link-sesion">INGRESAR / REGISTRARSE</a>
+        <a href="carrito.html">CARRITO <span id="cart-count" class="cart-badge"></span></a>
       </div>
     </div>
 
     <!-- Barra de búsqueda -->
-    <div class="searchbar">
-      <input type="text" placeholder="Buscar Artista o Evento">
+    <form class="searchbar" action="resultados.html" method="get">
+      <input type="text" name="q" placeholder="Buscar Artista o Evento">
       <input type="submit" value="Buscar">
-    </div>
+    </form>
 
   </header>
 
   <!-- ===== Menú de navegación del sitio ===== -->
   <nav>
-    <a href="index.html">Inicio</a>
-    <a href="listado_tabla.html">Lista de eventos</a>
-    <a href="listado_box.html">Listado (Cajas)</a>
-   <a href="producto.html">Ficha de Ticket</a>
-    <a href="login.html">Comprar</a>
+    <a href="index.html" class="activo">Inicio</a>
+    <a href="listado_box.html">Listado de Eventos</a>
+    <a href="producto.html">Ficha de Ticket</a>
   </nav>
 
   <main>
@@ -104,7 +104,7 @@
       <li><strong>CALAMARO</strong> - 20 de Noviembre - Luna Park</li>
     </ul>
 
-    <p>Visitá la sección de <a href="listado_tabla.html">listado de eventos</a> para ver todos los shows disponibles.</p>
+    <p>Visitá la sección de <a href="listado_box.html">listado de eventos</a> para ver todos los shows disponibles.</p>
   </div>
 
   </main>
@@ -112,6 +112,9 @@
   <footer>
     <p>TicketShow &copy; 2026 - Todos los derechos reservados</p>
   </footer>
+
+  <script src="carrito.js"></script>
+  <script src="app.js"></script>
 
 </body>
 </html>

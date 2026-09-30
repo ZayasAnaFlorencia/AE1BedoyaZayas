@@ -245,6 +245,136 @@ footer {
   color: white;
 }
 
+/* ===== Badge del contador del carrito ===== */
+.cart-badge {
+  display: none;
+  background-color: #e63946;
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  border-radius: 10px;
+  padding: 1px 6px;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+/* ===== Estado activo del menú de navegación ===== */
+nav a.activo {
+  text-decoration: underline;
+  color: #e63946;
+}
+
+/* ===== Página del carrito ===== */
+.tabla-carrito {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  background-color: white;
+}
+
+.tabla-carrito th {
+  background-color: #1a1a2e;
+  color: white;
+  padding: 10px;
+  text-align: left;
+}
+
+.tabla-carrito td {
+  padding: 10px;
+  border-bottom: 1px solid #dddddd;
+  text-align: left;
+}
+
+.tabla-carrito input[type="number"] {
+  width: 60px;
+  padding: 4px;
+}
+
+.link-quitar {
+  color: #e63946;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.link-quitar:hover {
+  text-decoration: underline;
+}
+
+.resumen-carrito {
+  background-color: white;
+  border: 2px solid #1a1a2e;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 350px;
+  margin: 20px 0 0 auto;
+  text-align: right;
+}
+
+.resumen-carrito .total {
+  font-size: 22px;
+  font-weight: bold;
+  color: #e63946;
+}
+
+.carrito-vacio {
+  background-color: white;
+  border: 2px dashed #999999;
+  border-radius: 8px;
+  padding: 40px;
+  text-align: center;
+  color: #666666;
+}
+
+/* ===== Página de confirmación de compra ===== */
+.confirmacion-caja {
+  background-color: white;
+  border: 2px solid #1a1a2e;
+  border-radius: 8px;
+  padding: 30px;
+  text-align: center;
+  max-width: 550px;
+  margin: 0 auto;
+}
+
+.confirmacion-caja .check {
+  font-size: 50px;
+}
+
+.confirmacion-caja .numero-orden {
+  font-weight: bold;
+  color: #e63946;
+  font-size: 20px;
+}
+
+.detalle-orden {
+  text-align: left;
+  margin-top: 20px;
+  border-top: 1px solid #dddddd;
+  padding-top: 15px;
+}
+
+.detalle-orden .fila {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+}
+
+/* ===== Resultados de búsqueda ===== */
+.resultados-info {
+  margin-bottom: 15px;
+  color: #555555;
+}
+
+.sin-resultados {
+  background-color: white;
+  border: 2px dashed #999999;
+  border-radius: 8px;
+  padding: 40px;
+  text-align: center;
+  color: #666666;
+}
+
 /* =========================================================
    ===== MEDIA QUERIES: adaptación a dispositivos móviles =====
    ========================================================= */
@@ -350,4 +480,41 @@ footer {
   form {
     max-width: 100%;
   }
+
+  .resumen-carrito {
+    max-width: 100%;
+    margin: 20px 0 0 0;
+  }
+
+  .confirmacion-caja {
+    padding: 20px;
+  }
+
+  .tabla-carrito {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
 }
+
+/* ===== Mensajes de estado (buscador, login, registro, checkout) ===== */
+.mensaje { padding: 10px 14px; border-radius: 6px; margin: 12px 0; font-weight: bold; }
+.mensaje[hidden] { display: none; }
+.mensaje.ok { background: #e6f6ea; color: #1f7a33; }
+.mensaje.error { background: #fdecea; color: #b3261e; }
+.mensaje.info { background: #eaf0fb; color: #1a3a7a; }
+
+/* ===== Validación de formularios y Mis Entradas ===== */
+[hidden] { display: none !important; }
+.campo-error { border: 2px solid #b3261e !important; background-color: #fdecea !important; }
+.caja-orden {
+  background-color: white;
+  border: 2px solid #1a1a2e;
+  border-radius: 8px;
+  padding: 18px 20px;
+  margin: 12px 0;
+  max-width: 560px;
+}
+.caja-orden h3 { margin-top: 0; }
+.caja-orden .numero-orden { color: #e63946; }
+.caja-orden .fecha-orden { color: #555555; margin: 0; }

@@ -8,17 +8,22 @@
 </head>
 <body>
 
-  <header>
-    <h1>🎟️ TicketShow</h1>
-    <p>Tu entrada a los mejores shows en vivo</p>
+  <header class="header-principal">
+    <div class="topbar">
+      <div class="logo">🎟️ TICKETSHOW</div>
+      <div class="topbar-links">
+        <a href="support.html">SOPORTE</a>
+        <a href="mis_entradas.html" id="link-mis-entradas" hidden>MIS ENTRADAS</a>
+        <a href="login.html" id="link-sesion">INGRESAR / REGISTRARSE</a>
+        <a href="carrito.html">CARRITO <span id="cart-count" class="cart-badge"></span></a>
+      </div>
+    </div>
   </header>
 
   <nav>
     <a href="index.html">Inicio</a>
-    <a href="listado_tabla.html">Listado (Tabla)</a>
-    <a href="listado_box.html">Listado (Cajas)</a>
+    <a href="listado_box.html" class="activo">Listado de Eventos</a>
     <a href="producto.html">Ficha de Ticket</a>
-    <a href="login.html">Comprar</a>
   </nav>
 
   <main>
@@ -44,7 +49,7 @@
     <div class="caja">
       <img src="https://cdn.getcrowder.com/images/957fb504-d4ae-4d2c-8269-620f49958fbf-image.jpeg?w=480&format=webp" alt="Calamaro">
       <h3>CALAMARO</h3>
-      <p>Fecha: 08/11/2026</p>
+      <p>Fecha: 20/11/2026</p>
       <p>Precio: $65.000</p>
       <a href="producto.html" class="boton">Comprar</a>
     </div>
@@ -52,7 +57,7 @@
     <div class="caja">
       <img src="https://cdn.getcrowder.com/images/ea85912e-de3b-41cb-9209-da3d9a7c2034-maroon5-banneraa-640x640-1.jpg?w=480&format=webp" alt="Maroon 5">
       <h3>Maroon 5</h3>
-      <p>Fecha: 20/11/2026</p>
+      <p>Fecha: 08/11/2026</p>
       <p>Precio: $75.000</p>
       <a href="producto.html" class="boton">Comprar</a>
     </div>
@@ -63,6 +68,9 @@
   <footer>
     <p>TicketShow &copy; 2026 - Todos los derechos reservados</p>
   </footer>
+
+  <script src="carrito.js"></script>
+  <script src="app.js"></script>
 
 </body>
 </html>
