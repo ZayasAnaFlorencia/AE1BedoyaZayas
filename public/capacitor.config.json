@@ -1,0 +1,7 @@
+{
+  "appId": "com.ticketshow.app",
+  "appName": "TicketShow",
+  "webDir": "www",
+  "backgroundColor": "#121218",
+  "server": { "androidScheme": "https" }
+}
