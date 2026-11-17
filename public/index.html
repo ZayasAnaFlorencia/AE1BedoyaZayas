@@ -3,21 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="TicketShow: entradas para shows y recitales en vivo.">
+  <meta name="description" content="TicketShow: comprá entradas para shows y recitales en vivo. Cartelera, tickets con QR, descarga en PDF y soporte.">
+  <meta name="theme-color" content="#0a0a10">
+  <meta name="color-scheme" content="dark">
   <title>TicketShow - Cartelera</title>
+
+  <!-- Favicon embebido: evita el 404 de /favicon.ico (error en consola → Buenas prácticas) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8E%9F%EF%B8%8F%3C/text%3E%3C/svg%3E">
+
+  <!-- Las imágenes de la cartelera vienen de este CDN: se abre la conexión antes -->
+  <link rel="preconnect" href="https://cdn.getcrowder.com" crossorigin>
+
   <link rel="stylesheet" href="css/style.css">
+
+  <!-- Evita la cascada app.js → api.js: ambos módulos se descargan en paralelo -->
+  <link rel="modulepreload" href="js/api.js">
   <script type="module" src="js/app.js"></script>
 </head>
 <body>
-  <a class="saltar" href="#vista">Saltar al contenido</a>
+  <a class="saltar" href="#vista" id="saltar">Saltar al contenido</a>
 
   <header class="site-header">
     <div class="site-header__inner">
       <a class="logo" href="#/" translate="no"><span class="logo__icono" aria-hidden="true">🎟️</span>TicketShow</a>
       <nav class="menu" aria-label="Menú principal">
         <a href="#/" data-ruta="#/">Cartelera</a>
+        <a href="#/soporte" data-ruta="#/soporte">Soporte</a>
       </nav>
-      <div class="site-header__cuenta" id="cuenta" aria-label="Cuenta"></div>
+      <div class="site-header__cuenta" id="cuenta" role="group" aria-label="Cuenta"></div>
     </div>
   </header>
 

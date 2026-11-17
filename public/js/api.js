@@ -59,6 +59,13 @@ export const api = {
   ordenes: async () => (await pedir("ordenes.php")).ordenes,
   comprar: async (datos) => (await pedir("ordenes.php", { metodo: "POST", cuerpo: datos })).orden,
 
+  // Reseñas, encuesta, e-mail y soporte
+  resenas: (eventoId) => pedir(`resenas.php?evento_id=${encodeURIComponent(eventoId)}`), // { resumen, resenas }
+  crearResena: (datos) => pedir("resenas.php", { metodo: "POST", cuerpo: datos }),
+  encuesta: (datos) => pedir("encuesta.php", { metodo: "POST", cuerpo: datos }),
+  enviarTickets: (ordenCodigo) => pedir("email.php", { metodo: "POST", cuerpo: { orden_codigo: ordenCodigo } }),
+  soporte: (datos) => pedir("soporte.php", { metodo: "POST", cuerpo: datos }),
+
   // Administración (rol admin) — CRUD de eventos
   adminEventos: async () => (await pedir("admin_eventos.php")).eventos,
   adminEvento: async (id) => (await pedir(`admin_eventos.php?id=${id}`)).evento,

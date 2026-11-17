@@ -144,7 +144,9 @@ class OrdenModel
     {
         $stmt = $this->pdo->prepare(
             'SELECT o.id, o.codigo, o.cantidad, o.precio_unitario, o.total, o.estado, o.creada_en,
-                    t.nombre AS tipo_entrada, e.titulo AS evento, e.fecha, e.lugar
+                    o.cliente_nombre, o.cliente_email,
+                    t.nombre AS tipo_entrada, e.id AS evento_id, e.titulo AS evento, e.fecha, e.lugar,
+                    (SELECT COUNT(*) FROM encuestas q WHERE q.orden_id = o.id) AS encuesta_respondida
              FROM ordenes o
              INNER JOIN tipos_entrada t ON t.id = o.tipo_entrada_id
              INNER JOIN eventos e       ON e.id = t.evento_id
@@ -167,6 +169,10 @@ class OrdenModel
 
             $resultado[] = [
                 'codigo'          => $o['codigo'],
+                'evento_id'       => (int) $o['evento_id'],
+                'cliente_nombre'  => $o['cliente_nombre'],
+                'cliente_email'   => $o['cliente_email'],
+                'encuesta_respondida' => (int) $o['encuesta_respondida'] > 0,
                 'evento'          => $o['evento'],
                 'fecha'           => $o['fecha'],
                 'lugar'           => $o['lugar'],
@@ -180,6 +186,34 @@ class OrdenModel
             ];
         }
         return $resultado;
+    }
+
+    /**
+     * Una orden por su código, SOLO si pertenece al usuario (si no, null).
+     * La usan el e-mail de tickets y la encuesta: el dueño sale de la sesión, no del cliente.
+     */
+    public function buscarPorCodigo(int $usuarioId, string $codigo): ?array
+    {
+        $stmt = $this->pdo->prepare(
+            'SELECT o.id, o.codigo, o.cantidad, o.cliente_nombre, o.cliente_email,
+                    t.nombre AS tipo_entrada, e.titulo AS evento, e.fecha, e.lugar
+             FROM ordenes o
+             INNER JOIN tipos_entrada t ON t.id = o.tipo_entrada_id
+             INNER JOIN eventos e       ON e.id = t.evento_id
+             WHERE o.codigo = :codigo AND o.usuario_id = :usuario_id
+             LIMIT 1'
+        );
+        $stmt->execute([':codigo' => $codigo, ':usuario_id' => $usuarioId]);
+        $orden = $stmt->fetch();
+        if ($orden === false) {
+            return null;
+        }
+
+        $stmtTickets = $this->pdo->prepare('SELECT codigo FROM tickets WHERE orden_id = :orden_id ORDER BY id');
+        $stmtTickets->execute([':orden_id' => $orden['id']]);
+        $orden['id'] = (int) $orden['id'];
+        $orden['tickets'] = array_column($stmtTickets->fetchAll(), 'codigo');
+        return $orden;
     }
 
     /**

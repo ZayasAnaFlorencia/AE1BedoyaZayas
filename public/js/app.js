@@ -53,8 +53,16 @@ function urlSegura(u) {
   return /^https?:\/\//i.test(u || "") ? u : "";
 }
 
-function imagen(url, alt) {
-  const img = h("img", { alt, loading: "lazy" });
+/**
+ * @param {boolean} prioritaria  true para la imagen "above the fold" (LCP): se carga ya,
+ *                               sin lazy-loading y con fetchpriority alto.
+ */
+function imagen(url, alt, { prioritaria = false, ancho = 400, alto = 300 } = {}) {
+  const img = h("img", {
+    alt, width: ancho, height: alto, decoding: "async",
+    loading: prioritaria ? "eager" : "lazy",
+    ...(prioritaria ? { fetchpriority: "high" } : {})
+  });
   const seguro = urlSegura(url);
   if (seguro) img.src = seguro;
   return img;
@@ -101,6 +109,31 @@ function titulo(texto) {
   return h("h1", { tabindex: "-1", id: "titulo-vista", text: texto });
 }
 
+/** Texto de estrellas con alternativa accesible: ★★★★☆ = "4 de 5". */
+function estrellas(n) {
+  return h("span", { class: "estrellas-fijas", role: "img", "aria-label": `${n} de 5`, text: "★".repeat(n) + "☆".repeat(5 - n) });
+}
+
+/** Grupo de 5 radios (1 a 5) accesible por teclado con flechas. */
+function puntajeInput(nombre) {
+  return h("fieldset", { class: "estrellas-radio" }, h("legend", { text: "Puntaje" }),
+    [1, 2, 3, 4, 5].map((n) => h("label", {}, h("input", { type: "radio", name: nombre, value: n, required: true }), ` ${n} ★`)));
+}
+
+/** Carga un script local (vendor/) una sola vez, bajo demanda. */
+const scriptsCargados = new Map();
+function cargarScript(src) {
+  if (!scriptsCargados.has(src)) {
+    scriptsCargados.set(src, new Promise((ok, fallo) => {
+      const el = h("script", { src });
+      el.addEventListener("load", ok);
+      el.addEventListener("error", () => { scriptsCargados.delete(src); fallo(new Error(`No se pudo cargar ${src}`)); });
+      document.head.append(el);
+    }));
+  }
+  return scriptsCargados.get(src);
+}
+
 /* ---------- Router ---------- */
 
 const rutas = [
@@ -110,6 +143,8 @@ const rutas = [
   [/^#\/login$/, vistaLogin],
   [/^#\/registro$/, vistaRegistro],
   [/^#\/mis-tickets$/, vistaMisTickets],
+  [/^#\/ticket\/([A-Z0-9-]{1,20})$/, vistaTicket],
+  [/^#\/soporte$/, vistaSoporte],
   [/^#\/admin$/, vistaAdmin],
   [/^#\/admin\/(nuevo|\d+)$/, vistaAdminForm]
 ];
@@ -187,12 +222,12 @@ async function cerrarSesion() {
 
 /* ---------- Vista: cartelera ---------- */
 
-function tarjetaEvento(ev) {
+function tarjetaEvento(ev, i = 99) {
   const m = /^\d{4}-(\d{2})-(\d{2})$/.exec(ev.fecha || "");
   const agotado = ev.disponibles === 0;
   return h("a", { class: "tarjeta", href: `#/evento/${ev.id}` },
     h("div", { class: "tarjeta__media" },
-      imagen(ev.imagen_url, ""),
+      imagen(ev.imagen_url, "", { prioritaria: i < 4 }),
       m ? h("span", { class: "tarjeta__fecha" }, h("b", { text: Number(m[2]) }), h("small", { text: MESES[Number(m[1]) - 1].slice(0, 3) })) : null),
     h("div", { class: "tarjeta__cuerpo" },
       h("h3", { text: ev.titulo }),
@@ -208,13 +243,13 @@ async function vistaCartelera(vigente) {
   const eventos = await api.eventos();
   if (!vigente()) return;
 
-  const grid = h("div", { class: "grid-eventos", id: "grid-eventos", "aria-live": "polite" });
+  const grid = h("div", { class: "grid-eventos", id: "grid-eventos" });
   const proximos = h("ul", { class: "proximos", id: "lista-proximos", "aria-live": "polite" });
   const estadoBusqueda = h("p", { class: "sin-resultados", id: "sin-resultados", "aria-live": "polite" });
 
   const pintarGrid = (lista) => {
     vacio(grid);
-    grid.append(...lista.map(tarjetaEvento));
+    grid.append(...lista.map((ev, i) => tarjetaEvento(ev, i)));
     estadoBusqueda.textContent = lista.length ? `${lista.length} show${lista.length === 1 ? "" : "s"} encontrado${lista.length === 1 ? "" : "s"}.` : "No encontramos shows con esa búsqueda.";
   };
 
@@ -270,7 +305,7 @@ async function vistaEvento(id, vigente) {
   });
 
   vista.append(h("article", { class: "contenido ficha" },
-    h("div", { class: "ficha__media" }, imagen(ev.imagen_url, `Imagen de ${ev.titulo}`)),
+    h("div", { class: "ficha__media" }, imagen(ev.imagen_url, `Imagen de ${ev.titulo}`, { prioritaria: true, ancho: 440, alto: 440 })),
     h("div", {},
       titulo(ev.titulo),
       h("ul", { class: "ficha__meta" }, h("li", {}, h("strong", { text: "Fecha: " }), fechaLarga(ev.fecha)), h("li", {}, h("strong", { text: "Lugar: " }), ev.lugar || "A confirmar")),
@@ -278,7 +313,48 @@ async function vistaEvento(id, vigente) {
       ev.instagram && urlSegura(ev.instagram) ? h("p", {}, h("a", { href: ev.instagram, target: "_blank", rel: "noopener noreferrer", text: "Ver en redes sociales" })) : null,
       h("h2", { class: "ficha__subtitulo", text: "Entradas" }),
       h("div", { class: "tiers" }, tiers),
-      h("p", {}, h("a", { href: "#/", text: "← Volver a la cartelera" })))));
+      h("p", {}, h("a", { href: "#/", text: "← Volver a la cartelera" })))),
+    seccionResenas(ev.id));
+}
+
+/* ---------- Reseñas y valoraciones ---------- */
+
+function seccionResenas(eventoId) {
+  const resumen = h("p", { class: "resumen-resenas" });
+  const lista = h("div", { id: "lista-resenas", "aria-live": "polite" });
+  const msg = h("div", { role: "alert", "aria-live": "assertive" });
+
+  const cargar = async () => {
+    const { resumen: r, resenas } = await api.resenas(eventoId);
+    resumen.textContent = r.total ? `Valoración promedio: ${r.promedio.toFixed(1)} de 5 (${r.total} reseña${r.total === 1 ? "" : "s"})` : "Todavía no hay reseñas.";
+    lista.replaceChildren(...resenas.map((x) => h("article", { class: "resena" },
+      h("header", {}, h("strong", { text: x.nombre }), " ", estrellas(x.puntaje), x.verificada ? h("small", { text: " · compra verificada" }) : null),
+      x.comentario ? h("p", { text: x.comentario }) : null)));
+  };
+
+  const form = estado.usuario
+    ? h("form", { novalidate: true, onsubmit: async (e) => {
+        e.preventDefault();
+        const btn = e.target.querySelector("button[type=submit]");
+        btn.disabled = true;
+        try {
+          await api.crearResena({ evento_id: eventoId, puntaje: Number(e.target.puntaje.value), comentario: e.target.comentario.value });
+          vacio(msg);
+          e.target.replaceWith(h("p", { class: "mensaje-exito", text: "¡Gracias por tu reseña!" }));
+          await cargar();
+        } catch (err) {
+          mostrarErrores(msg, err);
+          btn.disabled = false;
+        }
+      } },
+      puntajeInput("puntaje"),
+      h("div", {}, h("label", { for: "comentario-resena", text: "Comentario (opcional)" }), h("textarea", { id: "comentario-resena", name: "comentario", rows: "3", maxlength: "500" })),
+      botonAccion("Publicar reseña", { type: "submit" }), msg)
+    : h("p", {}, h("a", { href: "#/login", text: "Ingresá" }), " para dejar tu reseña.");
+
+  const seccion = h("section", { class: "contenido", "aria-labelledby": "titulo-resenas" }, h("h2", { id: "titulo-resenas", text: "Reseñas" }), resumen, lista, form);
+  cargar().catch((err) => { resumen.textContent = err.message; });
+  return seccion;
 }
 
 /* ---------- Vista: login y registro ---------- */
@@ -383,7 +459,7 @@ async function vistaComprar(eventoId, tipoId, vigente) {
         h("p", {}, h("strong", { text: "¡Compra confirmada! " }), `Orden ${orden.codigo} — total ${peso.format(orden.total)}.`),
         h("p", { text: "Tus códigos de ticket:" }),
         h("ul", {}, orden.tickets.map((c) => h("li", {}, h("code", { text: c })))),
-        h("p", {}, h("a", { href: "#/mis-tickets", text: "Ver mis tickets" }))));
+        h("p", {}, h("a", { href: `#/ticket/${orden.codigo}`, text: "Ver tickets con QR, descargar PDF y valorar la compra" }))));
     } catch (err) {
       mostrarErrores(msg, err);
       btn.disabled = false;
@@ -414,14 +490,209 @@ async function vistaMisTickets(vigente) {
 
   const lista = ordenes.length
     ? ordenes.map((o) => h("article", { class: "ticket-resumen" },
-        h("h3", { text: o.evento }),
+        h("h2", { class: "ticket-resumen__titulo", text: o.evento }),
         h("p", { text: `${fechaLarga(o.fecha)} · ${o.lugar || "A confirmar"}` }),
         h("p", { text: `${o.cantidad} × ${o.tipo_entrada} — total ${peso.format(o.total)} (${o.estado})` }),
-        h("p", {}, "Orden ", h("code", { text: o.codigo }), " · "),
-        h("ul", {}, o.tickets.map((t) => h("li", {}, h("code", { text: t.codigo }), t.usado ? " — usado" : " — válido")))))
+        h("p", {}, "Orden ", h("code", { text: o.codigo })),
+        h("ul", {}, o.tickets.map((t) => h("li", {}, h("code", { text: t.codigo }), t.usado ? " — usado" : " — válido"))),
+        h("p", {}, h("a", { class: "boton-chico", href: `#/ticket/${o.codigo}`, "aria-label": `Ver tickets de la orden ${o.codigo}`, text: "Ver QR / PDF" }))))
     : [h("p", {}, "Todavía no compraste entradas. ", h("a", { href: "#/", text: "Mirá la cartelera" }), ".")];
 
   vista.append(h("div", { class: "contenido" }, titulo("Mis tickets"), h("div", { id: "mis-tickets-resultado", "aria-live": "polite" }, lista)));
+}
+
+/* ---------- Ticket electrónico: QR, PDF, e-mail y encuesta ---------- */
+
+/** Dibuja el QR como SVG con createElementNS (sin armar HTML con cadenas). */
+function qrSvg(texto) {
+  const qr = qrcode(0, "M");
+  qr.addData(texto);
+  qr.make();
+  const n = qr.getModuleCount();
+  const margen = 2;
+  const lado = n + margen * 2;
+  const NS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(NS, "svg");
+  svg.setAttribute("viewBox", `0 0 ${lado} ${lado}`);
+  svg.setAttribute("shape-rendering", "crispEdges");
+  svg.setAttribute("role", "img");
+  svg.setAttribute("aria-label", `Código QR del ticket ${texto}`);
+  const fondo = document.createElementNS(NS, "rect");
+  fondo.setAttribute("width", lado);
+  fondo.setAttribute("height", lado);
+  fondo.setAttribute("fill", "#fff");
+  const trazo = document.createElementNS(NS, "path");
+  let d = "";
+  for (let f = 0; f < n; f++) {
+    for (let c = 0; c < n; c++) if (qr.isDark(f, c)) d += `M${c + margen} ${f + margen}h1v1h-1z`;
+  }
+  trazo.setAttribute("d", d);
+  trazo.setAttribute("fill", "#000");
+  svg.append(fondo, trazo);
+  return svg;
+}
+
+const latin = (s) => String(s ?? "").normalize("NFC").replace(/[^ -ÿ]/g, "?"); // jsPDF solo trae fuentes Latin-1
+
+function dibujarTicketPDF(doc, orden, codigo, indice) {
+  const W = 210, H = 90;
+  doc.setFillColor(18, 18, 24); doc.rect(0, 0, W, H, "F");
+  doc.setFillColor(230, 57, 70); doc.rect(0, 0, 6, H, "F");
+  doc.setFillColor(38, 12, 93); doc.rect(6, 0, 144, 16, "F");
+  doc.setTextColor(255, 255, 255);
+  doc.setFont("helvetica", "bold"); doc.setFontSize(14); doc.text("TICKETSHOW", 14, 10.5);
+  doc.setFont("helvetica", "normal"); doc.setFontSize(9);
+  doc.text(`Entrada ${indice + 1} de ${orden.tickets.length}`, 146, 10.5, { align: "right" });
+
+  doc.setFont("helvetica", "bold"); doc.setFontSize(18);
+  const tit = doc.splitTextToSize(latin(orden.evento), 132).slice(0, 2);
+  doc.text(tit, 14, 28);
+  let y = 28 + tit.length * 7 + 2;
+  doc.setFontSize(10);
+  const fila = (etiqueta, valor) => {
+    doc.setFont("helvetica", "bold"); doc.setTextColor(180, 180, 200); doc.text(etiqueta, 14, y);
+    doc.setFont("helvetica", "normal"); doc.setTextColor(255, 255, 255);
+    doc.text(doc.splitTextToSize(latin(valor), 108)[0], 38, y);
+    y += 6.5;
+  };
+  fila("Fecha", fechaLarga(orden.fecha));
+  fila("Lugar", orden.lugar || "A confirmar");
+  fila("Entrada", orden.tipo_entrada);
+  fila("Titular", orden.cliente_nombre);
+
+  doc.setFont("courier", "bold"); doc.setFontSize(13); doc.text(codigo, 14, H - 10);
+  doc.setFont("helvetica", "normal"); doc.setFontSize(7); doc.setTextColor(150, 150, 170);
+  doc.text(latin(`Compra ${orden.codigo} - Valido para una persona. Presenta este QR en el acceso.`), 14, H - 4.5);
+
+  doc.setDrawColor(90, 90, 110);
+  if (doc.setLineDashPattern) doc.setLineDashPattern([1.5, 1.5], 0);
+  doc.line(154, 4, 154, H - 4);
+  if (doc.setLineDashPattern) doc.setLineDashPattern([], 0);
+
+  const qr = qrcode(0, "M");
+  qr.addData(codigo);
+  qr.make();
+  const n = qr.getModuleCount();
+  const caja = 46, x0 = 156 + (W - 156 - caja) / 2, y0 = (H - caja) / 2, m = caja / n;
+  doc.setFillColor(255, 255, 255); doc.roundedRect(x0 - 3, y0 - 3, caja + 6, caja + 6, 2, 2, "F");
+  doc.setFillColor(0, 0, 0);
+  for (let f = 0; f < n; f++) for (let c = 0; c < n; c++) if (qr.isDark(f, c)) doc.rect(x0 + c * m, y0 + f * m, m + 0.01, m + 0.01, "F");
+}
+
+async function descargarPDF(orden, soloIndice) {
+  await Promise.all([cargarScript("vendor/qrcode.js"), cargarScript("vendor/jspdf.umd.min.js")]);
+  const doc = new window.jspdf.jsPDF({ orientation: "landscape", unit: "mm", format: [210, 90] });
+  const indices = typeof soloIndice === "number" ? [soloIndice] : orden.tickets.map((_, i) => i);
+  indices.forEach((i, pos) => {
+    if (pos > 0) doc.addPage([210, 90], "landscape");
+    dibujarTicketPDF(doc, orden, orden.tickets[i].codigo, i);
+  });
+  doc.save(`TicketShow-${orden.codigo}${typeof soloIndice === "number" ? `-${soloIndice + 1}` : ""}.pdf`);
+}
+
+async function vistaTicket(codigo, vigente) {
+  if (!estado.usuario) {
+    sessionStorage.setItem("destinoTrasLogin", location.hash);
+    return irA("#/login");
+  }
+  const [ordenes] = await Promise.all([api.ordenes(), cargarScript("vendor/qrcode.js")]);
+  if (!vigente()) return;
+  const orden = ordenes.find((o) => o.codigo === codigo);
+  if (!orden) {
+    vista.append(titulo("Compra no encontrada"), h("p", {}, "No encontramos esa compra en tu cuenta. ", h("a", { href: "#/mis-tickets", text: "Volver a mis tickets" }), "."));
+    return;
+  }
+
+  const msg = h("div", { id: "ticket-mensaje", role: "status", "aria-live": "polite" });
+  const accion = async (btn, tarea, okTexto) => {
+    btn.disabled = true;
+    try {
+      await tarea();
+      if (okTexto) mostrar(msg, okTexto, "ok");
+    } catch (err) {
+      mostrar(msg, err.message);
+    }
+    btn.disabled = false;
+  };
+
+  const tarjetas = orden.tickets.map((t, i) => h("article", { class: "ticket-card" },
+    h("div", { class: "ticket-info" },
+      h("p", { class: "ticket-num", text: `Entrada ${i + 1} de ${orden.tickets.length}${t.usado ? " · USADA" : ""}` }),
+      h("h2", { text: orden.evento }),
+      h("p", { text: `${fechaLarga(orden.fecha)} · ${orden.lugar || "A confirmar"}` }),
+      h("p", { text: `${orden.tipo_entrada} — titular: ${orden.cliente_nombre}` }),
+      h("p", { class: "ticket-codigo" }, h("code", { text: t.codigo })),
+      h("button", { type: "button", class: "boton-chico", text: "Descargar esta entrada (PDF)", onclick: (e) => accion(e.currentTarget, () => descargarPDF(orden, i)) })),
+    h("div", { class: "ticket-qr" }, qrSvg(t.codigo))));
+
+  const btnPdf = h("button", { type: "button", class: "accion-principal", onclick: (e) => accion(e.currentTarget, () => descargarPDF(orden)) }, h("span", { text: "Descargar todo (PDF)" }), h("span", { class: "flecha", "aria-hidden": "true", text: "→" }));
+  const btnMail = h("button", { type: "button", class: "accion-principal", onclick: (e) => accion(e.currentTarget, async () => {
+    const r = await api.enviarTickets(orden.codigo);
+    mostrar(msg, `Enviamos los tickets a ${r.destinatario}.`, "ok");
+  }) }, h("span", { text: `Enviar por e-mail a ${orden.cliente_email}` }), h("span", { class: "flecha", "aria-hidden": "true", text: "→" }));
+  const btnImprimir = h("button", { type: "button", class: "accion-principal", onclick: () => window.print(), }, h("span", { text: "Imprimir" }), h("span", { class: "flecha", "aria-hidden": "true", text: "→" }));
+
+  vista.append(h("div", { class: "contenido" },
+    titulo(`Tus tickets: ${orden.evento}`),
+    h("p", {}, "Compra ", h("code", { text: orden.codigo }), `. Presentá el QR (en el celular o impreso) en el acceso; cada código vale para una sola persona.`),
+    h("div", { class: "ticket-lista" }, tarjetas),
+    h("p", { class: "acciones-ticket" }, btnPdf, btnImprimir, btnMail),
+    msg,
+    orden.encuesta_respondida ? h("p", { class: "mensaje-exito", text: "Ya respondiste la encuesta de esta compra. ¡Gracias!" }) : formEncuesta(orden),
+    h("p", {}, h("a", { href: `#/evento/${orden.evento_id}`, text: "Dejar una reseña de este show" }), " · ", h("a", { href: "#/mis-tickets", text: "Volver a mis tickets" }))));
+}
+
+function formEncuesta(orden) {
+  const msg = h("div", { role: "alert", "aria-live": "polite" });
+  const form = h("form", { novalidate: true, onsubmit: async (e) => {
+    e.preventDefault();
+    const btn = form.querySelector("button[type=submit]");
+    btn.disabled = true;
+    try {
+      await api.encuesta({ orden_codigo: orden.codigo, puntaje: Number(form.puntaje.value), comentario: form.comentario.value });
+      form.replaceWith(h("p", { class: "mensaje-exito", text: "¡Gracias por responder la encuesta!" }));
+    } catch (err) {
+      mostrarErrores(msg, err);
+      btn.disabled = false;
+    }
+  } },
+    puntajeInput("puntaje"),
+    h("div", {}, h("label", { for: "comentario-encuesta", text: "¿Algo para mejorar? (opcional)" }), h("textarea", { id: "comentario-encuesta", name: "comentario", rows: "3", maxlength: "500" })),
+    botonAccion("Enviar encuesta", { type: "submit" }), msg);
+  return h("section", { "aria-labelledby": "titulo-encuesta" }, h("h2", { id: "titulo-encuesta", text: "Encuesta de satisfacción" }), h("p", { text: "¿Qué tan conforme quedaste con tu compra?" }), form);
+}
+
+/* ---------- Soporte ---------- */
+
+function vistaSoporte() {
+  const msg = h("div", { role: "alert", "aria-live": "polite" });
+  const form = h("form", { novalidate: true, onsubmit: async (e) => {
+    e.preventDefault();
+    const btn = form.querySelector("button[type=submit]");
+    btn.disabled = true;
+    try {
+      await api.soporte({ nombre: form.nombre.value, email: form.email.value, mensaje: form.mensaje.value });
+      form.replaceWith(h("p", { class: "mensaje-exito", text: "¡Recibimos tu consulta! Te respondemos por e-mail a la brevedad." }));
+    } catch (err) {
+      mostrarErrores(msg, err);
+      btn.disabled = false;
+    }
+  } },
+    campo("Nombre", "nombre", { required: true, maxlength: 100, value: estado.usuario ? estado.usuario.nombre : "", autocomplete: "name" }),
+    campo("E-mail", "email", { type: "email", required: true, maxlength: 120, autocomplete: "email" }),
+    h("div", {}, h("label", { for: "mensaje", text: "Mensaje (10 a 1000 caracteres)" }), h("textarea", { id: "mensaje", name: "mensaje", rows: "5", required: true, minlength: "10", maxlength: "1000" })),
+    botonAccion("Enviar consulta", { type: "submit" }), msg);
+
+  const pregunta = (q, r) => h("details", {}, h("summary", { text: q }), h("p", { text: r }));
+  vista.append(h("div", { class: "contenido" },
+    titulo("Soporte"),
+    h("h2", { text: "Preguntas frecuentes" }),
+    pregunta("¿Cómo recibo mis entradas?", "Al comprar se generan tus tickets con código QR. Podés verlos en Mis tickets, descargarlos en PDF, imprimirlos o recibirlos por e-mail."),
+    pregunta("¿Puedo comprar sin cuenta?", "No: necesitás registrarte e iniciar sesión para que tus tickets queden asociados a tu cuenta."),
+    pregunta("¿Cuántas entradas puedo comprar?", "Hasta 8 por compra. Cada código es válido para una sola persona."),
+    pregunta("¿Qué medios de pago aceptan?", "Mercado Pago, Visa, Mastercard, American Express, transferencia bancaria y efectivo (Pago Fácil / Rapipago)."),
+    h("h2", { text: "Contactanos" }),
+    form));
 }
 
 /* ---------- Administración: CRUD de eventos ---------- */
@@ -536,6 +807,13 @@ async function vistaAdminForm(id, vigente) {
 /* ---------- Arranque ---------- */
 
 window.addEventListener("hashchange", enrutar);
+
+// El enlace "Saltar al contenido" apuntaba a #vista, que el router por hash trataba como una
+// ruta inexistente y dejaba la pantalla en blanco. Se resuelve moviendo el foco sin tocar el hash.
+$("#saltar").addEventListener("click", (e) => {
+  e.preventDefault();
+  vista.focus();
+});
 
 (async () => {
   try {
