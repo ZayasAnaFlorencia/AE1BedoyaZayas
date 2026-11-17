@@ -420,7 +420,11 @@ form { display: grid; gap: 14px; max-width: 560px; }
 /* ===== Reseñas, encuesta y soporte ===== */
 .estrellas-radio { display: flex; flex-wrap: wrap; gap: 6px 18px; border: 0; padding: 0; margin: 0; }
 .estrellas-radio legend { padding: 0; margin-bottom: 6px; }
+<<<<<<< HEAD
 .estrellas-radio label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; min-height: 32px; margin-top: 0; }
+=======
+.estrellas-radio label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+>>>>>>> f17e05ec7ca2a93cf703e117112c20de433cdf57
 .estrellas-fijas { color: #ffd166; letter-spacing: 2px; }
 details { background: var(--card); border: 1px solid var(--linea); border-radius: 14px; padding: 12px 16px; margin: 10px 0; }
 summary { cursor: pointer; font-weight: 600; }
