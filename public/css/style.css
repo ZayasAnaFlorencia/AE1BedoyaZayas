@@ -385,3 +385,21 @@ button.boton:disabled { opacity: 0.5; cursor: not-allowed; }
   .ticket-card { break-inside: avoid; border-color: #000; background: #fff; color: #000; box-shadow: none; }
   .ticket-marca, .ticket-num { color: #000; }
 }
+
+/* ===== SPA (AE4): accesibilidad y utilidades ===== */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.saltar { position: absolute; left: 8px; top: -48px; z-index: 100; background: #fff; color: #260c5d; padding: 8px 14px; border-radius: 8px; }
+.saltar:focus-visible { top: 8px; }
+h1:focus, main:focus { outline: none; }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible {
+  outline: 3px solid #8ecae6; outline-offset: 3px;
+}
+.site-header__cuenta { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.saludo { opacity: .85; }
+button.enlace-accion { background: none; border: 0; color: inherit; font: inherit; cursor: pointer; text-decoration: underline; }
+.sin-resultados:empty { display: none; }
+form select, form input[type="date"], form input[type="url"], form input[type="email"], form input[type="password"], form input[type="tel"], form input[type="search"] { max-width: 100%; }
+form select { display: block; width: 100%; padding: 10px 12px; border-radius: 10px; }
+form { display: grid; gap: 14px; max-width: 560px; }
+.fila-entrada { display: grid; gap: 8px; }
+.tabla-admin caption { text-align: left; }

@@ -3,133 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TicketShow - Portada</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="manifest.webmanifest">
-  <meta name="theme-color" content="#260c5d">
-  <link rel="apple-touch-icon" href="icons/icon-192.png">
-  <script src="pwa.js" defer></script>
-  <script src="config.js" defer></script>
-  <script src="store.js" defer></script>
-  <script src="api.js" defer></script>
-  <script src="auth.js" defer></script>
-  <script src="i18n.js" defer></script>
-  <script src="app.js" defer></script>
+  <meta name="description" content="TicketShow: entradas para shows y recitales en vivo.">
+  <title>TicketShow - Cartelera</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/app.js"></script>
 </head>
 <body>
+  <a class="saltar" href="#vista">Saltar al contenido</a>
 
-  <!-- ===== Encabezado moderno: logo, menú y cuenta ===== -->
   <header class="site-header">
     <div class="site-header__inner">
-      <a class="logo" href="index.html" translate="no"><span class="logo__icono" aria-hidden="true">🎟️</span>TicketShow</a>
+      <a class="logo" href="#/" translate="no"><span class="logo__icono" aria-hidden="true">🎟️</span>TicketShow</a>
       <nav class="menu" aria-label="Menú principal">
-        <a href="index.html" aria-current="page">Inicio</a>
-        <a href="listado_tabla.html">Lista de eventos</a>
-        <a href="listado_box.html">Listado (Cajas)</a>
-        <a href="producto.html">Ficha de Ticket</a>
-        <a href="comprar.html">Comprar</a>
-        <a href="mis_tickets.html">Mis tickets</a>
+        <a href="#/" data-ruta="#/">Cartelera</a>
       </nav>
-      <div class="site-header__cuenta">
-        <a href="support.html">Soporte</a>
-        <a href="login.html">Ingresar</a>
-      </div>
+      <div class="site-header__cuenta" id="cuenta" aria-label="Cuenta"></div>
     </div>
   </header>
 
-  <main>
+  <!-- Región viva: avisa a lectores de pantalla cada cambio de vista -->
+  <p class="sr-only" id="anuncio" role="status" aria-live="polite"></p>
 
-  <!-- ===== Portada: imagen principal + buscador ===== -->
-  <section class="hero">
-    <img class="hero__img" src="https://cdn.getcrowder.com/images/1a485529-f1b3-4fed-9e69-21e89ab848cd-6c4bf4ab-415f-45ba-84f8-07bcc4485772-venta-lolla27-banners1920x720aa-1.jpg?w=960&format=webp" alt="Show en vivo">
-    <div class="hero__capa"></div>
-    <div class="hero__contenido">
-      <h1>Tu entrada a los mejores shows en vivo</h1>
-      <label class="buscador">
-        <span class="buscador__icono" aria-hidden="true">🔍</span>
-        <input type="search" id="buscador" placeholder="Buscar Artista o Evento" aria-label="Buscar Artista o Evento" autocomplete="off">
-      </label>
-    </div>
-  </section>
-
-  <section class="contenido" aria-labelledby="titulo-cartelera">
-    <h2 id="titulo-cartelera">Cartelera de Shows</h2>
-    <div class="grid-eventos" id="grid-eventos"></div>
-    <p class="sin-resultados" id="sin-resultados" hidden>No encontramos shows con esa búsqueda.</p>
-  </section>
-
-  <section class="contenido" aria-labelledby="titulo-proximos">
-    <h2 id="titulo-proximos">Próximos Shows</h2>
-    <p class="intro">
-      Bienvenido a TicketShow, el lugar donde conseguís tus entradas para los
-      recitales y shows más esperados del año. A continuación, un adelanto
-      de nuestra cartelera:
-    </p>
-    <ul class="proximos" id="lista-proximos"></ul>
-  </section>
-
-  </main>
+  <main id="vista" tabindex="-1"></main>
 
   <footer class="footer-grande">
-    <div class="footer-columnas">
-
-      <div class="footer-col">
-        <h3>Información de contacto</h3>
-        <div class="footer-logo">🎟️ TICKETSHOW</div>
-        <p>Desarrollado como proyecto académico, con el objetivo de difundir shows,
-          recitales y espectáculos en vivo, y ser el enlace directo para conseguir
-          tus entradas a los mejores eventos.</p>
-        <ul class="footer-contacto">
-          <li>📍 Av. Corrientes 1500, Buenos Aires, Argentina</li>
-          <li>✉️ <a href="mailto:ticketshow@gmail.com">ticketshow@gmail.com</a></li>
-          <li>📱 WhatsApp: <a href="https://wa.me/5493764617724?text=Hola%20TicketShow%2C%20necesito%20ayuda" target="_blank" rel="noopener noreferrer">+54 9 376 461-7724</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h3>Comuníquese con nosotros</h3>
-        <p>Llámenos al teléfono</p>
-        <p class="footer-telefono"><a href="tel:+5493764617724">+54 9 376 461-7724</a></p>
-      </div>
-
-      <div class="footer-col">
-        <h3>Mi cuenta</h3>
-        <a href="login.html">Mi cuenta</a>
-        <a href="mis_tickets.html">Mis tickets</a>
-        <a href="admin.html">Administración</a>
-      </div>
-
-      <div class="footer-col">
-        <h3>Más opciones</h3>
-        <a href="support.html">Sobre nosotros</a>
-        <a href="index.html">Novedades</a>
-        <a href="support.html">Contacte con nosotros</a>
-      </div>
-
-    </div>
-
-    <div class="footer-pagos-redes">
-      <div class="footer-pagos">
-        <h4>Aceptamos distintos medios de pago</h4>
-        <div class="pagos-lista">
-          <span class="pago-chip">Mercado Pago</span>
-          <span class="pago-chip">Visa</span>
-          <span class="pago-chip">Mastercard</span>
-          <span class="pago-chip">Amex</span>
-          <span class="pago-chip">Transferencia</span>
-        </div>
-      </div>
-      <div class="footer-redes">
-        <h4>Síguenos en las redes</h4>
-        <div class="redes-lista">
-          <a href="#" class="red-icono" aria-label="Instagram">📷</a>
-          <a href="#" class="red-icono" aria-label="Facebook">👍</a>
-        </div>
-      </div>
-    </div>
-
-    <p class="footer-copy">TicketShow &copy; 2026 - Todos los derechos reservados</p>
+    <p class="footer-copy">TicketShow &copy; 2026 - Proyecto académico (AE4 · TIFAS)</p>
   </footer>
 
+  <noscript><p>TicketShow necesita JavaScript habilitado para funcionar.</p></noscript>
 </body>
 </html>
