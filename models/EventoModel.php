@@ -35,7 +35,9 @@ class EventoModel
                   AND (e.fecha IS NULL OR e.fecha >= CURDATE())
                 GROUP BY e.id
                 ORDER BY (e.fecha IS NULL), e.fecha ASC';
-        $filas = $this->pdo->query($sql)->fetchAll();
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $filas = $stmt->fetchAll();
 
         return array_map(static function (array $f): array {
             return [
@@ -65,7 +67,9 @@ class EventoModel
                 LEFT JOIN tipos_entrada t ON t.evento_id = e.id
                 GROUP BY e.id
                 ORDER BY e.id DESC';
-        $filas = $this->pdo->query($sql)->fetchAll();
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $filas = $stmt->fetchAll();
 
         return array_map(static function (array $f): array {
             return [
